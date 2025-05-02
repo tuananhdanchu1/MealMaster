@@ -16,17 +16,31 @@ db.connect((err) => {
 const app = express();
 app.use(bodyParser.json());
 
-app.get('/api/notes', (req, res) => {
+app.get('/api/dishes', (req, res) => {
     db.query('SELECT * FROM Dishes', (err, results) => {
         if (err) {
-            res.status(500).send({ errot: err.message });
+            res.status(500).send({ error : err.message });
         } else {
             res.json(results);
         }
     });
 });
 
-const PORT = process.env.PORT || 5000;
+app.post('/api/dishes', (req, res) => {
+    const { name, description, price } = req.body;
+    db.query('INSERT INTO Dishes (name, description, price) VALUES (?, ?, ?)', [name, description, price], (err, results) => {
+        if (err) {
+            res.status(500).send({ error : err.message });
+        } else {
+            res.status(201).json({ id: results.insertId });
+        }
+    });
+});
+
+const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+const dishesRoutes = require('./routes/dishesRoutes.js');
+app.use('/api', dishesRoutes);
