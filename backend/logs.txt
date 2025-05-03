@@ -1,0 +1,8 @@
+đã sửa ở trong backend/DATA/models/các file models
+
+ví dụ ở file dishModel
+thì có phần được thêm vào là const User = require('./userModel');  
+
+phần này chưa được check rằng có đúng hay không
+
+Và sau khi 'node server.js' với tình trạng như thế, thì báo lỗi không kết nối được database

@@ -1,46 +1,39 @@
+// server.js
 const express = require('express');
-const mysql = require('mysql2');
-const bodyParser = require('body-parser');
-const config = require('./config.js');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const dbConfig = require('./DATA/config/dbConfig');
+const errorMiddleware = require('./API/middleware/errorMiddleware');
+const authRoutes = require('./API/routes/authRoutes');
+const userRoutes = require('./API/routes/userRoutes');
+const dishRoutes = require('./API/routes/dishRoutes');
+const mealPlanRoutes = require('./API/routes/mealPlanRoutes');
 
-const db = mysql.createConnection(config.db);
-
-db.connect((err) => {
-    if (err) {
-        console.error('Error connecting to the database: ' + err.stack);
-        return;
-    }
-    console.log('Connected to the database');
-});
+// Đọc cấu hình từ .env
+dotenv.config();
 
 const app = express();
-app.use(bodyParser.json());
 
-app.get('/api/dishes', (req, res) => {
-    db.query('SELECT * FROM Dishes', (err, results) => {
-        if (err) {
-            res.status(500).send({ error : err.message });
-        } else {
-            res.json(results);
-        }
-    });
-});
+// Middleware
+app.use(cors());  // Cho phép các yêu cầu từ các domain khác
+app.use(express.json());  // Giải mã dữ liệu JSON trong body của yêu cầu
 
-app.post('/api/dishes', (req, res) => {
-    const { name, description, price } = req.body;
-    db.query('INSERT INTO Dishes (name, description, price) VALUES (?, ?, ?)', [name, description, price], (err, results) => {
-        if (err) {
-            res.status(500).send({ error : err.message });
-        } else {
-            res.status(201).json({ id: results.insertId });
-        }
-    });
-});
+// Kết nối cơ sở dữ liệu
+dbConfig.authenticate()
+  .then(() => console.log('Database connected successfully.'))
+  .catch((err) => console.error('Unable to connect to the database:', err));
 
-const PORT = 5000;
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/dishes', dishRoutes);
+app.use('/api/mealPlans', mealPlanRoutes);
+
+// Middleware xử lý lỗi
+app.use(errorMiddleware);
+
+// Khởi tạo server
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
-
-const dishesRoutes = require('./routes/dishesRoutes.js');
-app.use('/api', dishesRoutes);
