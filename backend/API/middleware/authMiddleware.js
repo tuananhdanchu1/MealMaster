@@ -1,8 +1,7 @@
 // authMiddleware.js
-const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
+import jwt from 'jsonwebtoken';
+import User from '../models/userModel.js';
 
-// Kiểm tra xác thực JWT
 const authenticateToken = (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
 
@@ -12,16 +11,16 @@ const authenticateToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
+
     if (!decoded.userId) {
       return res.status(401).json({ message: 'Invalid token' });
     }
-    
-    req.user = decoded;  // Lưu thông tin người dùng đã giải mã vào req.user
+
+    req.user = decoded;
     next();
   } catch (error) {
     return res.status(401).json({ message: 'Invalid token' });
   }
 };
 
-module.exports = authenticateToken;
+export default authenticateToken;

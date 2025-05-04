@@ -1,8 +1,7 @@
 // dishController.js
-const dishService = require('../services/dishService');
+import * as dishService from '../services/dishService.js';
 
-// Lấy danh sách món ăn
-exports.getAllDishes = async (req, res) => {
+export const getAllDishes = async (req, res) => {
   try {
     const dishes = await dishService.getAllDishes();
     res.status(200).json(dishes);
@@ -11,8 +10,7 @@ exports.getAllDishes = async (req, res) => {
   }
 };
 
-// Lấy chi tiết món ăn
-exports.getDishDetails = async (req, res) => {
+export const getDishDetails = async (req, res) => {
   try {
     const { id } = req.params;
     const dish = await dishService.getDishDetails(id);
@@ -22,8 +20,7 @@ exports.getDishDetails = async (req, res) => {
   }
 };
 
-// Lưu món ăn yêu thích
-exports.saveFavoriteDish = async (req, res) => {
+export const saveFavoriteDish = async (req, res) => {
   try {
     const { userId, dishId } = req.body;
     const favoriteDish = await dishService.saveFavoriteDish(userId, dishId);

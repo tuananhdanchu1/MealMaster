@@ -1,8 +1,7 @@
 // userController.js
-const userService = require('../services/userService');
+import * as userService from '../services/userService.js';
 
-// Đăng ký người dùng mới
-exports.registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
   try {
     const { username, email, password, familyInfo } = req.body;
     const newUser = await userService.registerUser(username, email, password, familyInfo);
@@ -12,8 +11,7 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-// Lấy thông tin người dùng
-exports.getUserInfo = async (req, res) => {
+export const getUserInfo = async (req, res) => {
   try {
     const { userId } = req.params;
     const user = await userService.getUserInfo(userId);
@@ -23,8 +21,7 @@ exports.getUserInfo = async (req, res) => {
   }
 };
 
-// Cập nhật thông tin người dùng
-exports.updateUserInfo = async (req, res) => {
+export const updateUserInfo = async (req, res) => {
   try {
     const { userId } = req.params;
     const updatedUser = await userService.updateUserInfo(userId, req.body);

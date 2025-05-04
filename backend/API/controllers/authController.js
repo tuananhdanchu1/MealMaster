@@ -1,8 +1,7 @@
 // authController.js
-const authService = require('../services/authService');
+import * as authService from '../services/authService.js';
 
-// Đăng ký người dùng mới
-exports.register = async (req, res) => {
+export const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
     const newUser = await authService.registerUser(username, email, password);
@@ -12,8 +11,7 @@ exports.register = async (req, res) => {
   }
 };
 
-// Đăng nhập người dùng
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const { token, user } = await authService.loginUser(email, password);

@@ -1,12 +1,11 @@
 // authRoutes.js
-const express = require('express');
+import express from 'express';
+import * as authController from '../controllers/authController.js';
+
 const router = express.Router();
-const authController = require('../controllers/authController');
 
 // Đăng ký người dùng
 router.post('/register', authController.register);
-
-// Đăng nhập người dùng
 router.post('/login', authController.login);
 
-module.exports = router;
+export default router;

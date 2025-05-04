@@ -1,37 +1,37 @@
 // ingredientModel.js
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/dbConfig');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/dbConfig.js';
+import Dish from './dishModel.js';
 
 const Ingredient = sequelize.define('Ingredient', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,  // Đảm bảo nguyên liệu không bị trùng lặp
+    unique: true,
   },
   calories: {
-    type: DataTypes.INTEGER,  // Lượng calories trong nguyên liệu
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   protein: {
-    type: DataTypes.INTEGER,  // Lượng protein trong nguyên liệu
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   fat: {
-    type: DataTypes.INTEGER,  // Lượng chất béo trong nguyên liệu
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   carbohydrates: {
-    type: DataTypes.INTEGER,  // Lượng carbohydrate trong nguyên liệu
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   servingSize: {
-    type: DataTypes.STRING,  // Kích thước khẩu phần
+    type: DataTypes.STRING,
     allowNull: false,
-  }
+  },
 });
 
-const User = require('./userModel');  
-// Mối quan hệ giữa Ingredient và Dish (1:N)
+// Giả sử mỗi dish có một nguyên liệu chính (1:N)
 Ingredient.hasMany(Dish, { foreignKey: 'ingredientId' });
 
-module.exports = Ingredient;
+export default Ingredient;

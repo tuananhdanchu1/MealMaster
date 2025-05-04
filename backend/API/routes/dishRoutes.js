@@ -1,15 +1,13 @@
 // dishRoutes.js
-const express = require('express');
-const router = express.Router();
-const dishController = require('../controllers/dishController');
+import express from 'express';
+import * as dishController from '../controllers/dishController.js';
 
-// Lấy danh sách món ăn
+const router = express.Router();
+
 router.get('/', dishController.getAllDishes);
 
 // Lấy chi tiết món ăn
 router.get('/:id', dishController.getDishDetails);
-
-// Lưu món ăn yêu thích
 router.post('/favorite', dishController.saveFavoriteDish);
 
-module.exports = router;
+export default router;

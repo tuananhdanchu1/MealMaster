@@ -1,6 +1,7 @@
 // mealPlanModel.js
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/dbConfig');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/dbConfig.js';
+import User from './userModel.js';
 
 const MealPlan = sequelize.define('MealPlan', {
   userId: {
@@ -11,18 +12,17 @@ const MealPlan = sequelize.define('MealPlan', {
     },
   },
   breakfast: {
-    type: DataTypes.JSON,  // Lưu danh sách món ăn cho bữa sáng
+    type: DataTypes.JSON,
   },
   lunch: {
-    type: DataTypes.JSON,  // Lưu danh sách món ăn cho bữa trưa
+    type: DataTypes.JSON,
   },
   dinner: {
-    type: DataTypes.JSON,  // Lưu danh sách món ăn cho bữa tối
+    type: DataTypes.JSON,
   },
 });
 
-const User = require('./userModel');  
 // Mối quan hệ giữa User và MealPlan (1:N)
 MealPlan.belongsTo(User, { foreignKey: 'userId' });
 
-module.exports = MealPlan;
+export default MealPlan;

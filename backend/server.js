@@ -1,27 +1,21 @@
-// server.js
-const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const dbConfig = require('./DATA/config/dbConfig');
-const errorMiddleware = require('./API/middleware/errorMiddleware');
-const authRoutes = require('./API/routes/authRoutes');
-const userRoutes = require('./API/routes/userRoutes');
-const dishRoutes = require('./API/routes/dishRoutes');
-const mealPlanRoutes = require('./API/routes/mealPlanRoutes');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import sequelize from './DATA/config/dbConfig.js';
+import errorMiddleware from './API/middleware/errorMiddleware.js';
+import authRoutes from './API/routes/authRoutes.js';
+import userRoutes from './API/routes/userRoutes.js';
+import dishRoutes from './API/routes/dishRoutes.js';
+import mealPlanRoutes from './API/routes/mealPlanRoutes.js';
 
-// Đọc cấu hình từ .env
+// Đọc biến môi trường
 dotenv.config();
 
 const app = express();
 
 // Middleware
-app.use(cors());  // Cho phép các yêu cầu từ các domain khác
-app.use(express.json());  // Giải mã dữ liệu JSON trong body của yêu cầu
-
-// Kết nối cơ sở dữ liệu
-dbConfig.authenticate()
-  .then(() => console.log('Database connected successfully.'))
-  .catch((err) => console.error('Unable to connect to the database:', err));
+app.use(cors());
+app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -32,8 +26,26 @@ app.use('/api/mealPlans', mealPlanRoutes);
 // Middleware xử lý lỗi
 app.use(errorMiddleware);
 
-// Khởi tạo server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Tách phần khởi động server ra thành hàm async
+const startServer = async () => {
+  try {
+
+    console.log('Database config:', {
+      host: process.env.DB_HOST,
+      instance: process.env.DB_INSTANCE
+    });
+
+    await sequelize.authenticate();
+    console.log('✅ Database connected successfully.');
+
+    const PORT = process.env.PORT;
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error('❌ Unable to connect to the database:', err.message);
+  }
+};
+
+// Gọi hàm khởi động
+startServer();

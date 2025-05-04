@@ -1,25 +1,25 @@
 // userModel.js
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/dbConfig');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/dbConfig.js';
 
 const User = sequelize.define('User', {
   username: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   password: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   familyInfo: {
-    type: DataTypes.JSON,  // Lưu thông tin gia đình (tuổi, nhu cầu dinh dưỡng)
-  }
+    type: DataTypes.JSON, // Lưu thông tin gia đình (tuổi, nhu cầu dinh dưỡng)
+  },
 });
 
-module.exports = User;
+export default User;
