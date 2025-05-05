@@ -1,3 +1,4 @@
+// File: backend/DATA/config/dbConfig.js
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -10,11 +11,9 @@ const sequelize = new Sequelize(
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT),
     dialectOptions: {
-      options: {
-        instanceName: process.env.DB_INSTANCE,
-        encrypt: false,
-        trustServerCertificate: true,
-      }
+      instanceName: process.env.DB_INSTANCE,
+      encrypt: false,
+      trustServerCertificate: true
     },
     logging: false
   }

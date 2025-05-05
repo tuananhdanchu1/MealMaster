@@ -1,3 +1,4 @@
+// File: backend/server.js
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -46,6 +47,7 @@ const startServer = async () => {
     console.error('❌ Unable to connect to the database:', err.message);
   }
 };
+
 
 // Gọi hàm khởi động
 startServer();
